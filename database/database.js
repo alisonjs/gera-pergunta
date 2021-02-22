@@ -5,8 +5,8 @@ const connection = createConnection();
 function createConnection(){
   if(process.env.DB_IN_MEMORY == 'true'){
     return new Sequelize({
-      dialect: 'sqlite',
-      storage: 'storage/database.sqlite'
+      dialect: process.env.DB_DIALECT,
+      storage: process.env.DB_PATH
     });
 
   }else{
