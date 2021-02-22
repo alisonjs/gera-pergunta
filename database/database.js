@@ -6,7 +6,7 @@ function createConnection(){
   if(process.env.DB_IN_MEMORY == 'true'){
     return new Sequelize({
       dialect: 'sqlite',
-      storage: '/storage/database.sqlite'
+      storage: 'storage/database.sqlite'
     });
 
   }else{
