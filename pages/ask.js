@@ -1,38 +1,64 @@
+import {useState} from 'react';
+import { useRouter } from 'next/router'
 import Head from 'next/head';
 import Navbar from 'components/navbar';
 
 function Ask() {
+  const router = useRouter();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  async function handleSubmit(e){
+    e.preventDefault();
+    await fetch('/api/questions', {
+      body: JSON.stringify({
+        title: title,
+        description: description
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    }).then(()=>{
+      router.push('/');
+    })
+  }
+
   return (
     <div>
       <Head>
         <title>Gera Pergunta</title>
       </Head>
       <Navbar />
-      <div class="container">
-        <div class="card mt-3">
-          <div class="card-header">
+      <div className="container">
+        <div className="card mt-3">
+          <div className="card-header">
             <h3>Realizar pergunta</h3>
           </div>
-          <div class="card-body">
-            <form id="ask-form" method="POST" action="/questions">
-              <div class="form-group">
+          <div className="card-body">
+            <form id="ask-form" onSubmit={handleSubmit}>
+              <div className="form-group">
                 <label>Título</label>
                 <input
                   type="text"
                   placeholder="Título"
                   name="title"
-                  class="form-control my-2"
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
+                  className="form-control my-2"
                 />
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <label>Descrição</label>
                 <textarea
                   placeholder="Descreva sua pergunta aqui"
                   name="description"
-                  class="form-control my-2"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
+                  className="form-control my-2"
                 ></textarea>
               </div>
-              <button type="submit" class="btn btn-primary">
+              <button type="submit" className="btn btn-primary">
                 Perguntar
               </button>
             </form>
