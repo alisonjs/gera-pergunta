@@ -1,28 +1,35 @@
 import Head from 'next/head';
+import {useState} from 'react';
 import Navbar from 'components/navbar';
 import Legend from 'components/legend';
 import Link from 'next/link';
 import { MdQuestionAnswer } from 'react-icons/md';
-import Question from 'database/Question'
 
-export async function getStaticProps(context){
-
-  const questions = await Question.findAll({raw:true, order:[['id', 'DESC']]})
-  .then((result)=>{
-   return result;
-  }).catch(error => {
-    return [];
-  });
-
-  return {
-    props : {
-      questions: JSON.stringify(questions)
-    } 
+export default function Home() {
+  const data = [{
+    id: 1,
+    title: "Qual a melhor linguagem de programação para iniciar em 2021?",
+    description: "Sou iniciante e gostaria de saber com qual linguagem começar em 2021.",
+    createdAt: new Date(2021, 1, 22),
+    updatedAt: new Date(2021, 1, 22)
+  },
+  {
+    id: 2,
+    title: "Nodejs ou Deno?",
+    description: "Qual escolher e qual o mais seguro?",
+    createdAt: new Date(2020, 11, 15),
+    updatedAt: new Date(2020, 11, 15)
+  },
+  {
+    id: 3,
+    title: "Preciso aprender typescript?",
+    description: "Preciso aprender typescript para trabalhar em projetos reais?",
+    createdAt: new Date(2021, 1, 23),
+    updatedAt: new Date(2021, 1, 23)
   }
-}
+];
+  const [questions, setQuestions] = useState(data);
 
-export default function Home(props) {
-  const questions = JSON.parse(props.questions)
   return (
     <div>
       <Head>

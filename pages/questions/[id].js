@@ -2,76 +2,28 @@ import Head from 'next/head';
 import {useState} from 'react';
 import Legend from 'components/legend';
 import Navbar from 'components/navbar';
-import Answer from 'database/Answer';
-import Question from 'database/Question';
 
-export async function getStaticPaths(){
-
-  const questions = await Question.findAll({raw:true, order:[['id', 'DESC']]})
-  .then((result)=>{
-   return result;
-  }).catch(error => {
-    console.log(error)
-    return [];
-  });
-
-  const paths = questions.map((question) => ({
-    params: { id: `${question.id}` },
-  }));
-
-  return {
-    paths,
-    fallback: true
-  };
-}
-
-export async function getStaticProps(context){
-
-  const id = context.params.id;
-
-  const answers = await Answer.findAll({
-    where: {questionId:id},
-    order:[['id', 'DESC']]
-  }).then(results => {
-    return results;
-  }).catch((error)=>{
-    console.log(error)
-    return [];
-  });
-
+export async function getServersideProps(req, res){
   return {
     props : {
-      questionId: id,
-      answers: JSON.stringify(answers)
+      id: req.params.id
     }
   }
-
 }
 
 function Questions(props) {
-  console.log(props)
+
   const [answer, setAnswer] = useState("");
-  const [answers, setAnswers] = useState(JSON.parse(props.answers));
-  const questionId = props.questionId;
+  const [answers, setAnswers] = useState([]);
+  const [questionId, setQuestionId] = useState(props.id);
 
   async function handleSubmit(e){
     e.preventDefault();
 
     const answerSubmited = {body: answer, questionId: questionId, createdAt: new Date()};
 
-    await fetch(`/api/questions/${questionId}`, {
-      body: JSON.stringify({
-        answer: answer,
-        questionId: questionId
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'POST'
-    }).then(()=>{
-      setAnswer("");
-      setAnswers([answerSubmited, ...answers])
-    })
+    setAnswer("");
+    setAnswers([answerSubmited, ...answers])
   }
 
   return (

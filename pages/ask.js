@@ -10,18 +10,7 @@ function Ask() {
 
   async function handleSubmit(e){
     e.preventDefault();
-    await fetch('/api/questions', {
-      body: JSON.stringify({
-        title: title,
-        description: description
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'POST'
-    }).then(()=>{
-      router.push('/');
-    })
+    router.push('/');
   }
 
   return (
