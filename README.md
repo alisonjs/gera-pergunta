@@ -1,6 +1,6 @@
 # Gera pergunta
 
-Questions and answers app develop with Nextjs. [open](gera-pergunta.vercel.app)
+Questions and answers app develop with Nextjs. [open](https://gera-pergunta.vercel.app/)
 
 ## Functionalities
 
