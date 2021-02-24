@@ -1,5 +1,3 @@
-import Answer from 'database/Answer';
-
 export default (req, res) => {
   const questionId = req.params.id;
   res.status(200).json([{
